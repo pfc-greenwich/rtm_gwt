@@ -1,0 +1,12 @@
+<module>
+	<inherits name="com.google.gwt.user.User"/>
+	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
+	<inherits name="com.terrapin.rtm.data" />
+	<inherits name="com.google.gwt.json.JSON" />
+	<inherits name="com.google.gwt.core.Core" />
+	<add-linker name="xs" />
+	
+	<source path="client" />
+	
+	<entry-point class="com.terrapin.rtm.delegate.client.EditDelegates"/>
+</module>
