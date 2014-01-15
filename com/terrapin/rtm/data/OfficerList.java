@@ -51,7 +51,7 @@ public class OfficerList extends FlexTable {
 
     // private native void log(String msg)
     // /*-{
-    // $wnd.console.log(msg)
+	// 	$wnd.console.log(msg)
     // }-*/;
 
     public void setDistrict(int d) {
@@ -85,7 +85,8 @@ public class OfficerList extends FlexTable {
 
             @Override
             public void onError(Request request, Throwable exception) {
-                Window.alert("Sending Request for Officers:" + exception.getMessage());
+                Window.alert("Sending Request for Officers:"
+                        + exception.getMessage());
             }
 
             @Override
@@ -97,7 +98,7 @@ public class OfficerList extends FlexTable {
                     // handle OK response from the server
                     officers = JSONParser.parseStrict(response.getText())
                             .isObject().get("matches").isArray();
-                    // log("Array size = " + delegates.size());
+                    // log("Array size = " + officers.size());
                     // Window.alert("Array size = " + officers.size());
                     removeAllRows();
 
@@ -133,21 +134,24 @@ public class OfficerList extends FlexTable {
                                 updateCommitteeDelegate(btn);
                             }
                         });
-                        // log("object " + i + ": "
-                        // + delegates.get(i).isObject().get("node"));
                         JSONObject d = (JSONObject) officers.get(i).isObject();
                         btn.setNid(d.get("nid").isString().stringValue());
-                        if (d.containsKey("uid")) {
-                            btn.setUid(d.get("uid").isString().stringValue());
+                        setHTML(i, 0, d.get("office").isString().stringValue());
+                        if (d.get("uid").isNull() == null) {
+                            if (d.containsKey("uid")) {
+                                btn.setUid(d.get("uid").isString()
+                                        .stringValue());
+                                name.setValue(d.get("uid").isString()
+                                        .stringValue());
+                            } else {
+                                btn.setUid("Anonymous");
+                                name.setValue("");
+                            }
                         }
+                        setWidget(i, 1, name);
                         btn.setText("Update");
                         btn.setEnabled(false);
                         setWidget(i, 2, btn);
-                        setHTML(i, 0, d.get("office").isString().stringValue());
-                        if (d.containsKey("uid")) {
-                            name.setValue(d.get("uid").isString().stringValue());
-                        }
-                        setWidget(i, 1, name);
 
                     }
                 } else {
